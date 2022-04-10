@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkdns>
+	<servers>
+		<server name="localhost">127.0.0.1</server>
+		<server name="google-ns1">8.8.8.8</server>
+		<server name="google-ns2">8.8.4.4</server>
+	</servers>
+	<comparisons>
+		<compare server1="localhost" server2="*" />
+	</comparisons>
+	<domains>
+		<domain>google.com</domain>
+	</domains>
+</checkdns>
