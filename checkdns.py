@@ -65,7 +65,11 @@ def getconfpath(file=None):
 def loadconfig(configfile='checkdns.xml'):
 	global servers, comparisons, domains
 
-	xml = ET.parse(configfile)
+	try:
+		xml = ET.parse(configfile)
+	except Exception as e:
+		log.error('Error parsing config file: ' + str(e))
+		sys.exit(1)
 
 	if xml.getroot().tag != 'checkdns':
 		return
