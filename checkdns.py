@@ -23,7 +23,7 @@
 import xml.etree.ElementTree as ET
 import dns.resolver
 import logging, logging.handlers
-import getopt, os, sys, time, uuid
+import argparse, os, sys, time, uuid
 
 # Setup Logging:
 class UTCFormatter(logging.Formatter):
@@ -151,28 +151,21 @@ def checkdomain(domain):
 				errorres = True
 
 def main():
-	global cfile
+	ap = argparse.ArgumentParser(description='Simple DNS SOA serial check script', add_help=False)
+	ap.add_argument('-h', '-?', '--help', help='Show this help message and exit', action='help')
+	ap.add_argument('-c', '--config', help='Specify the path to a config file', action='store', default='checkdns.xml', dest='config')
+	ap.add_argument('-d', '--debug', help='Enable debug mode', action='store_true', dest='debug')
+	ap.add_argument('-v', '--verbose', help='Enable verbose logging', action='store_true', dest='verbose')
+	args = ap.parse_args()
 
-	cfile = getconfpath('checkdns.xml')
+	if args.verbose:
+		log.setLevel(logging.INFO)
+	elif args.debug:
+		log.setLevel(logging.DEBUG)
+	cfile = getconfpath(args.config)
 
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], "c:vd", ['config=', 'verbose', 'debug'])
-	except getopt.GetoptError as err:
-		print(err)
-		sys.exit(2)
-
-	for o, a in opts:
-		if o in ('-v', '-verbose'):
-			log.setLevel(logging.INFO)
-		elif o in ('-d', '-debug'):
-			log.setLevel(logging.DEBUG)
-		elif o in ('-c', '-config'):
-			cfile = getconfpath(a)
-		else:
-			log.error('Unrecognised command line parameter %s', o)
-			sys.exit(2)
-
-	log.debug('config: %s', cfile)
+	log.debug('specified config file: %s', args.config)
+	log.debug('config file: %s', cfile)
 	log.debug('log level: %s', str(log.getEffectiveLevel()))
 
 	if cfile is None:
