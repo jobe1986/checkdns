@@ -29,7 +29,7 @@ import argparse, os, sys, time, uuid
 class UTCFormatter(logging.Formatter):
     converter = time.gmtime
 
-log = logging.getLogger(None)
+log = logging.getLogger("checkdns")
 log.setLevel(logging.WARNING)
 defloghandler = logging.StreamHandler(sys.stdout)
 deflogformatter = UTCFormatter('[%(asctime)s] [%(name)s/%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S')
