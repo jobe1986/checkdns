@@ -115,8 +115,8 @@ def checkdomain(domain):
 
 	for srv in servers:
 		try:
-			log.info('Checking SOA record for %s on server %s', domain, srv)
-			res = servers[srv]['r'].query(domain, 'SOA')
+			log.info('Retrieving SOA record for %s from server %s', domain, srv)
+			res = servers[srv]['r'].resolve(domain, 'SOA')
 			results[srv] = res.rrset[0].to_text()
 		except Exception as e:
 			log.warning('Unable to get SOA record for %s from %s: %s', domain, srv, str(e))
